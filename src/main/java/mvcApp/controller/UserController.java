@@ -5,11 +5,11 @@ import mvcApp.DAO.UserDaoImp;
 import mvcApp.Service.UserService;
 import mvcApp.Service.UserServiceImp;
 import mvcApp.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -17,13 +17,23 @@ import java.util.List;
 @Controller
 public class UserController {
 
-    @GetMapping("/users")
+    @Autowired
+    private UserService us;
+
+    @GetMapping("/users") // все пользователи
     public String printUsers(ModelMap model){
-        UserService us = new UserServiceImp();
         List<User> messages = us.getAllUsers();
         model.addAttribute("messages", messages);
         return "users";
     }
+    @GetMapping("/create")
+    public String createNewUser(Model model, @ModelAttribute ("user")User user){
+        model.addAttribute("user", user);
+        us.add(user);
+        return "redirect:/users";
+    }
+
+
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public ModelAndView editPage(){
@@ -31,5 +41,6 @@ public class UserController {
         modelAndView.setViewName("edit");
         return modelAndView;
     }
+
 
 }

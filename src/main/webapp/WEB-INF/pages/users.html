@@ -34,6 +34,16 @@
         <td th:utext="${messages.age}">Age</td>
     </tr>
 </table>
-</div>
+<br>
+
+<form th:method="POST" th:action="@{/create}" th:object="${user}">
+    <label for="name">Name:</label>
+    <input type="text" th:field="*{name}" id="name"/>
+    <label for="age">Age</label>
+    <input type="number" th:field="*{age}" id="age"/>
+    <input type="submit" value="Add User"/>
+
+</form>
+
 </body>
 </html>
